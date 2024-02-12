@@ -13,7 +13,7 @@ router.route('/:id').get((req, res) => {
 router.route('/:id').put((req, res) => {
   res.status(200).json({ message: `update contact ${req.params.id}` });
 });
-router.route('/:id').get((req, res) => {
+router.route('/:id').delete((req, res) => {
   res.status(200).json({ message: `delete contact ${req.params.id}` });
 });
 
