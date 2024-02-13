@@ -1,24 +1,31 @@
 const asyncHandler = require('express-async-handler');
-const contact = require('../models/contactModels');
+const Contact = require('../models/contactModels');
 
 //@desc Get all contact
 //@route GET /api/contacts
 //@access public
 const getContacts = asyncHandler(async (req, res) => {
-  const contacts = Contact.find();
+  const contacts = await Contact.find();
   res.status(200).json(contacts);
 });
-//@desc Create new contact
+//@desc Create New contact
 //@route POST /api/contacts
-//@access public
+//@access private
 const createContact = asyncHandler(async (req, res) => {
   console.log('The request body is :', req.body);
   const { name, email, phone } = req.body;
   if (!name || !email || !phone) {
     res.status(400);
-    throw new Error('All field is empty !');
+    throw new Error('All fields are mandatory !');
   }
-  res.status(201).json({ message: 'Create contact' });
+  const contact = await Contact.create({
+    name,
+    email,
+    phone,
+    user_id: req.user.id,
+  });
+
+  res.status(201).json(contact);
 });
 //@desc Get  contact
 //@route GET /api/contacts/id
